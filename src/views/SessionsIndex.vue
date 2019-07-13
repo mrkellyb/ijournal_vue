@@ -31,13 +31,12 @@
         <span v-if="action.notes">
           Notes: {{ action.notes }}<br>
         </span>
-        Tags: <span v-for="tag in action.tags"> <i>{{ tag.name }} </i></span><br>
+        <span v-if="action.tags">
+        Tags: <span v-for="tag in action.tags"><i>{{ tag.name }} </i></span><br>
         &nbsp;<br>
-        {{ session.stop_notes}}
-
-        <!-- <hr> -->
-
+        </span>
       </div>
+      {{ session.stop_notes}}
       <hr> 
     </div>
     

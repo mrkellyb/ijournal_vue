@@ -26,6 +26,7 @@
       <span v-for="tag in tags">
         <input type="checkbox" :value="tag.id" v-model="actions[0].tag_ids"> {{ tag.name }}
       </span>
+      {{ actions[0].tag_ids}}
       <hr>
 
 
@@ -42,6 +43,7 @@
       <span v-for="tag in tags">
         <input type="checkbox" :value="tag.id" v-model="actions[1].tag_ids"> {{ tag.name }}
       </span>
+         {{ actions[1].tag_ids}}
       <hr>
       Action 3<br>
       Name: <input type="text" v-model="actions[2].name"><br>
@@ -123,7 +125,8 @@ export default {
       axios
         .post("/api/sessions", params)
         .then(response => {
-          console.log(response.data);
+          this.$router.push("/sessions");
+          // console.log(response.data);
 
         })
         .catch(error => {

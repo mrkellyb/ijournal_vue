@@ -11,25 +11,33 @@
 
         </textarea>
       </p>
+      {{ actions }}
+      <p v-for="action in actions">
 
-      <p v-for="action in session.actions">
-
-        Action name: <input type="text" v-model="action.name"><br>
-        Resource: <input type="text" v-model="action.resource"><br>
-        URL: <input type="text" v-model="action.resource_url"><br>
-        Start tempo: <input type="text" v-model="action.start_tempo"><br>
-        Stop tempo: <input type="text" v-model="action.stop_tempo"><br>
-        Keys covered: <input type="text" v-model="action.keys"><br>
-        Time spent: <input type="text" v-model="action.time_spent"><br>
+        Action name: <input type="text" v-model="actions[actions.indexOf(action)].name"><br>
+        Resource: <input type="text" v-model="actions[actions.indexOf(action)].resource"><br>
+        URL: <input type="text" v-model="actions[actions.indexOf(action)].resource_url"><br>
+        Start tempo: <input type="text" v-model="actions[actions.indexOf(action)].start_tempo"><br>
+        Stop tempo: <input type="text" v-model="actions[actions.indexOf(action)].stop_tempo"><br>
+        Keys covered: <input type="text" v-model="actions[actions.indexOf(action)].keys"><br>
+        Time spent: <input type="text" v-model="actions[actions.indexOf(action)].time_spent"><br>
         Notes: <br>
-        <textarea rows="6" cols="50" v-model="action.notes"> </textarea><br>
+        <textarea rows="6" cols="50" v-model="actions[actions.indexOf(action)].notes"> </textarea><br>
+        Tags:<br>
+        <span v-for="tag in tags">
+          <input type="checkbox" :value="tag.id" v-model="actions[actions.indexOf(action)].tag_ids"> {{ tag.name }}
+        </span>
+        {{ actions[actions.indexOf(action)].tag_ids }}
       <p>
         Stop Notes: {{ session.stop_notes}} <br>
         <textarea rows="6" cols="50" v-model="session.stop_notes">
           session.stop_notes
         </textarea>
       </p>
-      <button type="submit">Save your changes</button>
+      <button type="submit">Save your changes</button><br>
+      <div>
+        <button v-on:click="destroySession()">PERMANENTLY DELETE THIS SESSION & ALL OF ITS ACTIONS!</button>
+      </div>
     </form>
 
   </div>
@@ -44,12 +52,25 @@ export default {
     return {
       errors:  [],
       session: {},
+      // actions: [{tag_ids: []}],
+      actions: [],
+      tags: [],
     };
   },
   created: function() {
     axios.get("api/sessions/" + this.$route.params.id).then(response => {
       this.session = response.data;
+      this.actions = this.session.actions;
+      this.actions.forEach(function(action) {
+        action.tag_ids = action.tags.map(tag => tag.id);
+
+
+      });
       console.log(this.session);
+    });
+    axios.get("api/tags").then(response => {
+      this.tags = response.data;
+      console.log(this.tags);
     });
   },
   methods: {
@@ -57,12 +78,19 @@ export default {
       var params = {
         date: this.session.date,
         start_notes: this.session.start_notes,
+        start_time:  this.session.start_time,
         stop_notes: this.session.stop_notes,
+        stop_time: this.session.stop_time,
+        actions: this.actions,
       };
+      axios.patch("/api/sessions/" + this.session.id, params).then(response => {
+        console.log("Session updated.", response.data);
+        this.$router.push("/sessions/" + this.session.id);
+      });
     },
 
 
-    destroySession:  function() {
+    destroySession: function() {
       if(confirm("Do you really want to delete this session and all of its actions?"))
         axios.delete("api/sessions/" + this.session.id).then(response => {
           console.log("Session deleted", response.data);
