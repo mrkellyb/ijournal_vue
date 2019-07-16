@@ -4,31 +4,35 @@
       <router-link to="/">Home</router-link> |
       <router-link to="/about">About</router-link> | 
       <router-link to="/signup">Sign Up</router-link> | 
-      <router-link to="/login">Log In</router-link> | 
-      <router-link to="/logout">Log Out</router-link> | 
+      <span v-if="!isLoggedIn()"><router-link to="/login">Log In</router-link> | </span>
+      <span v-if="isLoggedIn()"><router-link to="/logout">Log Out</router-link> | </span>
+      <router-link to="/sessions">My Sessions</router-link> | 
+      <router-link to="/sessions/new">Create A New Session</router-link> 
+ 
+      <b>{{ username }}</b>
     </div>
     <router-view/>
   </div>
 </template>
 
-<!-- <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-#nav {
-  padding: 30px;
-}
+<script>
+import axios from "axios";
+export default {
+  data: function() {
+    return {
+      username: localStorage.getItem('username'),
+      user: {}
+    };
+  },
 
-#nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-#nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style> -->
+  methods: {
+    isLoggedIn: function() {
+      if (localStorage.getItem('jwt')) {
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
+};
+</script>

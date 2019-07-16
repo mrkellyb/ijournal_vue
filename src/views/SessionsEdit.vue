@@ -11,7 +11,7 @@
 
         </textarea>
       </p>
-      {{ actions }}
+   <!--    {{ actions }} -->      
       <p v-for="action in actions">
 
         Action name: <input type="text" v-model="actions[actions.indexOf(action)].name"><br>
@@ -27,7 +27,7 @@
         <span v-for="tag in tags">
           <input type="checkbox" :value="tag.id" v-model="actions[actions.indexOf(action)].tag_ids"> {{ tag.name }}
         </span>
-        {{ actions[actions.indexOf(action)].tag_ids }}
+        <!-- {{ actions[actions.indexOf(action)].tag_ids }} -->
       <p>
         Stop Notes: {{ session.stop_notes}} <br>
         <textarea rows="6" cols="50" v-model="session.stop_notes">
@@ -91,11 +91,12 @@ export default {
 
 
     destroySession: function() {
-      if(confirm("Do you really want to delete this session and all of its actions?"))
+      if (confirm("Do you really want to delete this session and all of its actions?")) {
         axios.delete("api/sessions/" + this.session.id).then(response => {
-          console.log("Session deleted", response.data);
           this.$router.push("/sessions");
+          console.log("Session deleted", response.data);
         });
+      }
     }
   }
 };

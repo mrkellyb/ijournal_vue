@@ -1,6 +1,9 @@
 <template>
   <div class="sessions_new">
     <h1>Start a new session</h1>
+    <h3>{{moment().format('dddd, MMMM Do, YYYY')}}</h3><br>
+
+
 
     <form v-on:submit.prevent="submit()">
       <ul>
@@ -26,7 +29,7 @@
       <span v-for="tag in tags">
         <input type="checkbox" :value="tag.id" v-model="actions[0].tag_ids"> {{ tag.name }}
       </span>
-      {{ actions[0].tag_ids}}
+      <!-- {{ actions[0].tag_ids}} -->
       <hr>
 
 
@@ -43,7 +46,7 @@
       <span v-for="tag in tags">
         <input type="checkbox" :value="tag.id" v-model="actions[1].tag_ids"> {{ tag.name }}
       </span>
-         {{ actions[1].tag_ids}}
+        <!--  {{ actions[1].tag_ids}} -->
       <hr>
       Action 3<br>
       Name: <input type="text" v-model="actions[2].name"><br>
@@ -89,6 +92,10 @@
 
 <script>
 import axios from "axios";
+import moment from "moment";
+// var datetime = moment().format('MMMM Do YYYY, h:mm:ss a');
+
+
 
 export default {
   data: function() {
@@ -102,7 +109,7 @@ export default {
       actions: [{tag_ids: []},{tag_ids: []},{tag_ids: []},{tag_ids: []}],
       status: "",
       tags: [],
-
+      currentDate: new Date(),
     };
   },
   created: function() {
@@ -112,6 +119,10 @@ export default {
     });
   },
   methods: {
+    today: function() {
+      var currentDate = new Date();
+      console.log(currentDate);
+    },
     submit: function() {
       var params = {
 
@@ -132,9 +143,16 @@ export default {
         .catch(error => {
           this.errors = error.response.data.errors;
         });
-    }
+    },
+    moment: function() {
+      return moment();
+    },
+
+
   },
 };
+
+
 
 
 </script>

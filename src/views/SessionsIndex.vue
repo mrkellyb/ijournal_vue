@@ -37,6 +37,9 @@
         </span>
       </div>
       {{ session.stop_notes}}
+      <p>
+        <button @click="$router.push('/sessions/' + session.id + '/edit')">Edit or Delete This Session</button>
+
       <hr> 
     </div>
     
