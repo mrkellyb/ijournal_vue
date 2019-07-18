@@ -38,9 +38,11 @@
         <textarea rows="6" cols="50" v-model="actions[actions.indexOf(action)].notes"> </textarea><br>
         Tags:<br>
 
-<!--         <span v-for="tag in tags">
+      <!-- THIS CODE WORKS WITHOUT THE THEME -------
+        <span v-for="tag in tags">
           <input type="checkbox" :value="tag.id" v-model="actions[actions.indexOf(action)].tag_ids"> {{ tag.name }}
-        </span> -->
+        </span> 
+      ------------------------------------------ -->
 
         <span class="checkbox-row" v-for="tag in tags">
           <div class="input-checkbox input-checkbox--switch">
