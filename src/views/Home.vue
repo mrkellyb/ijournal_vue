@@ -1,6 +1,8 @@
 <template>
   <div class="home">
-    <h1>{{ message }}</h1>
+    <div class="container">
+    <p>Manage your practice sessions & track your progress.</p>
+    </div>
   </div>
 </template>
 

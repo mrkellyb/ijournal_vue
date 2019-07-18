@@ -1,12 +1,25 @@
 <template>
   <div class="sessions-edit">
-    <h1>Edit this session</h1>
 
+    <section class="text-center">
+        <div class="container pos-vertical-center">
+            <div class="row">
+                <div class="col-md-8 col-lg-6">
+                    <h1>Edit this Session</h1>
+                </div>
+            </div>
+            <!--end of row-->
+        </div>
+        <!--end of container-->
+    </section>
+    
+    <section class="space--xs blog-article-wide">
+      <div class="container">
     <form v-on:submit.prevent="submit()">
-      Date: {{ session.date }} <br>
+      Date: <!-- {{ session.date }} --> <br>
       <input type="text"  size="40" v-model="session.date">
       <p>
-        Start Notes: {{ session.start_notes}} <br>
+        Start Notes:<!--  {{ session.start_notes}} --> <br>
         <textarea rows="6" cols="50" v-model="session.start_notes">
 
         </textarea>
@@ -24,25 +37,47 @@
         Notes: <br>
         <textarea rows="6" cols="50" v-model="actions[actions.indexOf(action)].notes"> </textarea><br>
         Tags:<br>
-        <span v-for="tag in tags">
+
+<!--         <span v-for="tag in tags">
           <input type="checkbox" :value="tag.id" v-model="actions[actions.indexOf(action)].tag_ids"> {{ tag.name }}
+        </span> -->
+
+        <span class="checkbox-row" v-for="tag in tags">
+          <div class="input-checkbox input-checkbox--switch">
+            <input :id="tag.id" type="checkbox" :value="tag.id" v-model="actions[0].tag_ids">
+            <label :for="tag.id"></label> <span>{{ tag.name }}</span>
+          </div>
+           
         </span>
-        <!-- {{ actions[actions.indexOf(action)].tag_ids }} -->
+
       <p>
-        Stop Notes: {{ session.stop_notes}} <br>
+        Stop Notes: <!-- {{ session.stop_notes}} --> <br>
         <textarea rows="6" cols="50" v-model="session.stop_notes">
           session.stop_notes
         </textarea>
       </p>
-      <button type="submit">Save your changes</button><br>
       <div>
-        <button v-on:click="destroySession()">PERMANENTLY DELETE THIS SESSION & ALL OF ITS ACTIONS!</button>
+      <button class="btn btn--primary col-md-5" type="submit">Save your changes</button>
+    </div>
+    <p>&nbsp;</p>
+      <div>
+
+        <button class="btn btn--dark col-md-5" v-on:click="destroySession()">PERMANENTLY DELETE THIS SESSION & ALL OF ITS ACTIONS!</button>
+
       </div>
     </form>
+  </div>
+  </section>
 
   </div>
 
 </template>
+
+<style>
+  .checkbox-row {
+    margin-right: 10px;
+  }
+</style>
 
 <script>
 import axios from "axios";
@@ -85,7 +120,7 @@ export default {
       };
       axios.patch("/api/sessions/" + this.session.id, params).then(response => {
         console.log("Session updated.", response.data);
-        this.$router.push("/sessions/" + this.session.id);
+        this.$router.push("/sessions/");
       });
     },
 
